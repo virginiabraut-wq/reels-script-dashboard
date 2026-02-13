@@ -287,9 +287,9 @@ export default function DashboardPage() {
 
               {/* wrapper per far respirare la chat */}
               <div className="min-h-0">
-                <div className="h-[55vh] min-h-90 w-full">
-                  <CustomChatPanel ref={chatRef} />
-                </div>
+                <div className={brief ? "h-[70vh] w-full" : "h-auto w-full"}>
+  <CustomChatPanel ref={chatRef} />
+</div>
               </div>
             </section>
 
