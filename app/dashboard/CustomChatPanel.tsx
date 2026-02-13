@@ -160,7 +160,9 @@ export default forwardRef<CustomChatPanelHandle, {}>(function CustomChatPanel(_p
       {ready && (
         <div className="h-[calc(100%-0px)] w-full">
           {/* se il tuo progetto usa il web component, questo renderizza input + messaggi */}
-          <chatkit-ui style={{ height: "100%", width: "100%", display: "block" }} />
+          {React.createElement("chatkit-ui", {
+  style: { height: "100%", width: "100%", display: "block" },
+})}
         </div>
       )}
     </div>
