@@ -3,6 +3,7 @@
 import React, { useMemo, useRef, useState } from "react";
 import BriefForm, { Brief, BriefDraft } from "./BriefForm";
 import CustomChatPanel, { CustomChatPanelHandle } from "./CustomChatPanel";
+import Image from "next/image";
 
 type FormatItem = {
   id: string;
@@ -252,10 +253,24 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-zinc-50">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <header className="mb-6">
-          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">Franci.GPT💜</h1>
-          <p className="text-sm text-zinc-600">Brief → Trend → Format → Script</p>
-        </header>
+      <header className="mb-6 flex items-center gap-3">
+  <Image
+    src="/logo-franci.jpg"
+    alt="Franci GPT logo"
+    width={36}
+    height={36}
+    className="rounded-full"
+  />
+
+  <div>
+    <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
+      Franci.GPT💜
+    </h1>
+    <p className="text-sm text-zinc-600">
+      Brief → Trend → Format → Script
+    </p>
+  </div>
+</header>
 
         <div className="grid gap-6 lg:grid-cols-[360px_1fr]">
           {/* SIDEBAR: SOLO BRIEF */}
