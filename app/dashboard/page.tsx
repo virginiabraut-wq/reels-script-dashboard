@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
 import BriefForm, { Brief, BriefDraft } from "./BriefForm";
-import CustomChatPanel, { CustomChatPanelHandle } from "./CustomChatPanel";
 import Image from "next/image";
 
 type FormatItem = {
@@ -61,13 +60,13 @@ async function postJson<TResponse>(
 }
 
 export default function DashboardPage() {
-  const chatRef = useRef<CustomChatPanelHandle | null>(null);
-
   const [brief, setBrief] = useState<Brief | null>(null);
+  const [referenceScript, setReferenceScript] = useState("");
 
   const [formats, setFormats] = useState<FormatItem[]>([]);
   const [formatsLoading, setFormatsLoading] = useState(false);
   const [formatsError, setFormatsError] = useState<string | null>(null);
+  const [pipelineRunId, setPipelineRunId] = useState<string | null>(null);
 
   const [approvedIds, setApprovedIds] = useState<Record<string, true>>({});
   const [reworkNotes, setReworkNotes] = useState<Record<string, string>>({});
@@ -85,6 +84,7 @@ export default function DashboardPage() {
 
   function resetDownstream() {
     setFormats([]);
+    setPipelineRunId(null);
     setApprovedIds({});
     setReworkNotes({});
     setReworkLoadingId(null);
@@ -96,31 +96,41 @@ export default function DashboardPage() {
 
   async function onSubmitBrief(draft: BriefDraft) {
     const normalized: Brief = {
-      topic: draft.topic.trim(),
-      industry: draft.industry.trim(),
+      topic: draft.topic?.trim() || undefined,
+      industry: draft.industry?.trim() || undefined,
       platform: draft.platform,
       content_goal: draft.content_goal,
       campaign_objective: draft.campaign_objective,
-      target_audience: draft.target_audience.trim(),
-      tone_of_voice: draft.tone_of_voice.map((t) => t.trim()).filter(Boolean),
+      target_audience: draft.target_audience?.trim() || undefined,
+      tone_of_voice: (draft.tone_of_voice ?? []).map((t) => t.trim()).filter(Boolean),
       creator_type: draft.creator_type,
       deliverable: draft.deliverable.map((d) => d.toLowerCase().trim()).filter(Boolean),
-      constraints: draft.constraints.length ? draft.constraints : ["nessuno"],
-      cta: draft.cta.trim(),
+      constraints: draft.constraints.length ? draft.constraints : undefined,
+      cta: draft.cta?.trim() || undefined,
+      reference_script: referenceScript.trim() ? referenceScript.trim() : undefined,
+      video_purpose: draft.video_purpose?.trim() || undefined,
+      content_archetype: draft.content_archetype?.trim() || undefined,
+      hook_type: draft.hook_type?.trim() || undefined,
+      emotional_tone: draft.emotional_tone?.trim() || undefined,
+      max_duration_seconds: draft.max_duration_seconds || undefined,
+      words_to_avoid: draft.words_to_avoid?.map((w) => w.trim()).filter(Boolean),
+      mandatory_elements: draft.mandatory_elements?.map((m) => m.trim()).filter(Boolean),
+      awareness_level: draft.awareness_level?.trim() || undefined,
+      desired_reaction: draft.desired_reaction?.trim() || undefined,
     };
 
     setBrief(normalized);
     resetDownstream();
 
-    const message = `BRIEF_JSON:\n${JSON.stringify({ brief: normalized }, null, 2)}`;
-    chatRef.current?.startNewThread(message);
-
     setFormatsLoading(true);
     setFormatsError(null);
 
-    const res = await postJson<{ formats: FormatItem[] }>("/api/pipeline/formats", {
-      brief: normalized,
-    });
+    const res = await postJson<{ pipeline_run_id?: string; formats: FormatItem[] }>(
+      "/api/pipeline/formats",
+      {
+        brief: normalized,
+      }
+    );
 
     setFormatsLoading(false);
 
@@ -131,6 +141,7 @@ export default function DashboardPage() {
 
     const nextFormats = Array.isArray(res.data.formats) ? res.data.formats : [];
     setFormats(nextFormats);
+    setPipelineRunId(res.data.pipeline_run_id ?? null);
   }
 
   function approveFormat(id: string) {
@@ -168,8 +179,8 @@ export default function DashboardPage() {
       alternatives?: FormatItem[];
       updated_format?: FormatItem;
     }>("/api/pipeline/feedback", {
+      pipeline_run_id: pipelineRunId,
       brief,
-      format_id: id,
       reason: note,
       current_format: current ?? null,
     });
@@ -276,7 +287,6 @@ export default function DashboardPage() {
           {/* SIDEBAR: SOLO BRIEF */}
           <aside className="rounded-2xl border bg-purple-100 p-4 shadow-sm">
             <BriefForm
-              key={brief ? `${brief.topic}-${brief.industry}` : "empty"}
               onSubmit={onSubmitBrief}
               disabled={formatsLoading || scriptsLoadingId !== null}
             />
@@ -284,27 +294,34 @@ export default function DashboardPage() {
 
           {/* MAIN: CHAT + FORMAT + SCRIPT */}
           <main className="min-h-0 rounded-2xl border bg-white p-4 shadow-sm flex flex-col gap-6">
-            {/* CHAT */}
-            <section className="min-h-0 flex flex-col">
-              <div className="mb-3 flex items-center justify-between">
+            {/* SCRIPT DI RIFERIMENTO */}
+            <section className="rounded-2xl border bg-zinc-50 p-4">
+              <div className="mb-2 flex items-center justify-between">
                 <div>
-                  <div className="text-sm font-semibold text-zinc-900">Chat (conversazione)</div>
-                  <div className="text-xs text-zinc-600">
-                    Qui puoi chiedere variazioni, chiarimenti, alternative.
-                  </div>
+                  <h2 className="text-sm font-semibold text-zinc-900">Script di riferimento (opzionale)</h2>
+                  <p className="text-xs text-zinc-600">
+                    Incolla uno script esistente: verrà usato come ispirazione di ritmo e struttura quando premi Genera.
+                  </p>
                 </div>
-                {totalScripts > 0 && (
-                  <div className="text-xs text-zinc-600">
-                    Script totali: <b>{totalScripts}</b>
-                  </div>
+                {referenceScript.trim() && (
+                  <button
+                    type="button"
+                    onClick={() => setReferenceScript("")}
+                    className="text-xs font-medium text-zinc-600 hover:text-zinc-900"
+                  >
+                    Svuota
+                  </button>
                 )}
               </div>
-
-              {/* wrapper per far respirare la chat */}
-              <div className="min-h-0">
-                <div className={brief ? "h-[70vh] w-full" : "h-auto w-full"}>
-  <CustomChatPanel ref={chatRef} />
-</div>
+              <textarea
+                value={referenceScript}
+                onChange={(e) => setReferenceScript(e.target.value)}
+                rows={6}
+                className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+                placeholder="Esempio: hook, scene, battute, CTA..."
+              />
+              <div className="mt-2 text-[11px] text-zinc-500">
+                Non viene copiato alla lettera: serve solo come riferimento.
               </div>
             </section>
 

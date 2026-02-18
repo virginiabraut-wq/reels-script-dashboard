@@ -9,6 +9,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const brief = body?.brief;
+    const pipeline_run_id = crypto.randomUUID();
 
     if (!brief) {
       return NextResponse.json(
@@ -24,6 +25,9 @@ Ricevi questo brief:
 ${JSON.stringify(brief, null, 2)}
 
 Genera ESATTAMENTE 6 format.
+
+Se nel brief c'è "reference_script", usalo come riferimento per ritmo/struttura/tono senza copiare frasi.
+Se nel brief ci sono "mandatory_elements", assicurati che siano esplicitamente inclusi nel format (titolo o descrizione).
 
 Rispondi SOLO con JSON valido nel formato:
 
@@ -74,7 +78,10 @@ Regole:
       );
     }
 
-    return NextResponse.json(parsed);
+    return NextResponse.json({
+      pipeline_run_id,
+      formats: parsed.formats ?? [],
+    });
   } catch (err: unknown) {
     const message =
       err instanceof Error ? err.message : "Unknown error";

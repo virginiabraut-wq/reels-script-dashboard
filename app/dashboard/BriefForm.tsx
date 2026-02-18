@@ -3,17 +3,27 @@
 import React, { useMemo, useState } from "react";
 
 export type Brief = {
-  topic: string;
-  industry: string;
-  platform: "Instagram" | "TikTok" | "Instagram+TikTok";
-  content_goal: "organico" | "adv";
-  campaign_objective: "awareness" | "engagement" | "conversion" | "lead";
-  target_audience: string;
-  tone_of_voice: string[];
-  creator_type: "creator esperto" | "creator consumer" | "creator testimonial";
-  deliverable: string[]; // lowercase
-  constraints: string[]; // ["nessuno"] se vuoto
-  cta: string;
+  topic?: string;
+  industry?: string;
+  platform?: "Instagram" | "TikTok" | "Instagram+TikTok";
+  content_goal?: "organico" | "adv";
+  campaign_objective?: "awareness" | "engagement" | "conversion" | "lead";
+  target_audience?: string;
+  tone_of_voice?: string[];
+  creator_type?: "creator esperto" | "creator consumer" | "creator testimonial";
+  deliverable?: string[]; // lowercase
+  constraints?: string[];
+  cta?: string;
+  reference_script?: string;
+  video_purpose?: string;
+  content_archetype?: string;
+  hook_type?: string;
+  emotional_tone?: string;
+  max_duration_seconds?: number;
+  words_to_avoid?: string[];
+  mandatory_elements?: string[];
+  awareness_level?: string;
+  desired_reaction?: string;
 };
 
 export type BriefDraft = Omit<Brief, "deliverable" | "constraints"> & {
@@ -61,10 +71,17 @@ export default function BriefForm({
   const [deliverable, setDeliverable] = useState<string[]>(["reel"]);
   const [constraintsText, setConstraintsText] = useState("");
   const [cta, setCta] = useState<string>("salva per dopo");
+  const [videoPurpose, setVideoPurpose] = useState("");
+  const [contentArchetype, setContentArchetype] = useState("");
+  const [hookType, setHookType] = useState("");
+  const [emotionalTone, setEmotionalTone] = useState("");
+  const [maxDurationSeconds, setMaxDurationSeconds] = useState("");
+  const [wordsToAvoidText, setWordsToAvoidText] = useState("");
+  const [mandatoryElementsText, setMandatoryElementsText] = useState("");
+  const [awarenessLevel, setAwarenessLevel] = useState("");
+  const [desiredReaction, setDesiredReaction] = useState("");
 
-  const isValid = useMemo(() => {
-    return topic.trim() && industry.trim() && targetAudience.trim() && cta.trim();
-  }, [topic, industry, targetAudience, cta]);
+  const isValid = useMemo(() => true, []);
 
   function toggleDeliverable(v: string) {
     setDeliverable((prev) => {
@@ -90,6 +107,15 @@ export default function BriefForm({
       deliverable,
       constraints: splitCommaOrNewline(constraintsText),
       cta,
+      video_purpose: videoPurpose,
+      content_archetype: contentArchetype,
+      hook_type: hookType,
+      emotional_tone: emotionalTone,
+      max_duration_seconds: maxDurationSeconds ? Number(maxDurationSeconds) : undefined,
+      words_to_avoid: splitCommaOrNewline(wordsToAvoidText),
+      mandatory_elements: splitCommaOrNewline(mandatoryElementsText),
+      awareness_level: awarenessLevel,
+      desired_reaction: desiredReaction,
     };
 
     onSubmit(draft);
@@ -253,6 +279,91 @@ export default function BriefForm({
               onChange={(e) => setCta(e.target.value)}
             />
           )}
+        </Field>
+
+        <Field label="Video purpose">
+          <input
+            value={videoPurpose}
+            onChange={(e) => setVideoPurpose(e.target.value)}
+            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            placeholder="Es. educare, ispirare, convertire"
+          />
+        </Field>
+
+        <Field label="Content archetype">
+          <input
+            value={contentArchetype}
+            onChange={(e) => setContentArchetype(e.target.value)}
+            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            placeholder="Es. tutorial, recensione, storytelling"
+          />
+        </Field>
+
+        <Field label="Hook type">
+          <input
+            value={hookType}
+            onChange={(e) => setHookType(e.target.value)}
+            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            placeholder="Es. shock, domanda, problema/soluzione"
+          />
+        </Field>
+
+        <Field label="Emotional tone">
+          <input
+            value={emotionalTone}
+            onChange={(e) => setEmotionalTone(e.target.value)}
+            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            placeholder="Es. empatico, energico, autorevole"
+          />
+        </Field>
+
+        <Field label="Max duration (seconds)">
+          <input
+            value={maxDurationSeconds}
+            onChange={(e) => setMaxDurationSeconds(e.target.value)}
+            type="number"
+            min={1}
+            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            placeholder="Es. 30"
+          />
+        </Field>
+
+        <Field label="Words to avoid (virgola o a capo)">
+          <textarea
+            value={wordsToAvoidText}
+            onChange={(e) => setWordsToAvoidText(e.target.value)}
+            rows={2}
+            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            placeholder="Es. miracoloso, garantito..."
+          />
+        </Field>
+
+        <Field label="Mandatory elements (virgola o a capo)">
+          <textarea
+            value={mandatoryElementsText}
+            onChange={(e) => setMandatoryElementsText(e.target.value)}
+            rows={2}
+            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            placeholder="Es. brand name, pricing, disclaimer..."
+          />
+        </Field>
+
+        <Field label="Awareness level">
+          <input
+            value={awarenessLevel}
+            onChange={(e) => setAwarenessLevel(e.target.value)}
+            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            placeholder="Es. unaware, problem-aware, solution-aware"
+          />
+        </Field>
+
+        <Field label="Desired reaction">
+          <input
+            value={desiredReaction}
+            onChange={(e) => setDesiredReaction(e.target.value)}
+            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            placeholder="Es. commenta, salva, visita il sito"
+          />
         </Field>
       </div>
 

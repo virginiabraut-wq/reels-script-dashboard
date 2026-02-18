@@ -20,9 +20,10 @@ function extractJsonObject(text: string) {
 
 export async function POST(req: Request) {
   try {
-    const { pipeline_run_id, brief, format, reason } = await req.json();
+    const { pipeline_run_id, brief, format, current_format, reason } = await req.json();
+    const resolvedFormat = format ?? current_format;
 
-    if (!pipeline_run_id || !brief || !format?.id) {
+    if (!pipeline_run_id || !brief || !resolvedFormat?.id) {
       return NextResponse.json(
         { error: "Missing required: pipeline_run_id, brief, format.id" },
         { status: 400 }
@@ -34,11 +35,11 @@ export async function POST(req: Request) {
     // salva feedback reject
     const ins = await supabase.from("format_feedback").insert({
       pipeline_run_id,
-      format_id: format.id,
+      format_id: resolvedFormat.id,
       decision: "reject",
       reason: rejectReason,
       brief_payload: brief,
-      format_payload: format,
+      format_payload: resolvedFormat,
     });
 
     if (ins.error) {
@@ -68,7 +69,7 @@ BRIEF (JSON):
 ${JSON.stringify(brief, null, 2)}
 
 FORMAT RIFIUTATO (JSON):
-${JSON.stringify(format, null, 2)}
+${JSON.stringify(resolvedFormat, null, 2)}
 
 MOTIVO RIFIUTO:
 ${rejectReason}
@@ -86,9 +87,9 @@ Restituisci SOLO JSON valido con questa forma:
 
 {
   "assistant_message": "2-4 frasi conversazionali",
-  "replacements": [
+      "replacements": [
     {
-      "id": "${format.id}a",
+      "id": "${resolvedFormat.id}a",
       "title": "...",
       "description": "...",
       "goal": "engagement",
@@ -96,7 +97,7 @@ Restituisci SOLO JSON valido con questa forma:
       "why_this_works": ["...", "...", "..."]
     },
     {
-      "id": "${format.id}b",
+      "id": "${resolvedFormat.id}b",
       "title": "...",
       "description": "...",
       "goal": "engagement",

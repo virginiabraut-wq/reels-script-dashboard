@@ -45,6 +45,9 @@ export async function POST(req: Request) {
 Sei un generatore di script UGC Instagram Reel.
 Restituisci SOLO JSON valido nel formato:
 
+Se nel brief è presente "reference_script", usalo come riferimento per stile, ritmo e struttura senza copiare testo.
+Se nel brief sono presenti "mandatory_elements", includili esplicitamente in scene/caption/CTA in modo naturale.
+
 {
   "scripts": [
     {

@@ -14,6 +14,9 @@ Genera 6 format UGC per Instagram Reels coerenti con questo brief.
 BRIEF (JSON):
 ${JSON.stringify(brief, null, 2)}
 
+Se nel brief c'è "reference_script", usalo come riferimento per ritmo/struttura/tono senza copiare frasi.
+Se nel brief ci sono "mandatory_elements", assicurati che siano esplicitamente inclusi nel format (titolo o descrizione).
+
 VINCOLI:
 - Rispetta constraints e CTA.
 - id deve essere fmt-001..fmt-006.
