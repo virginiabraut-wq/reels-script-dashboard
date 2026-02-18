@@ -122,20 +122,20 @@ export default function BriefForm({
   }
 
   return (
-    <form onSubmit={submit} className="space-y-4">
-      <div className="rounded-xl border bg-purple-100 p-3">
-        <div className="text-sm font-semibold text-zinc-900">Brief</div>
-        <div className="mt-1 text-xs text-zinc-600">
+    <form onSubmit={submit} className="space-y-5">
+      <div className="rounded-xl border bg-white/70 p-4">
+        <div className="text-base font-semibold text-zinc-900">Brief</div>
+        <div className="mt-1 text-sm text-zinc-600">
           Compila → premi <b>Genera</b> → poi approvi/rifiuti i format.
         </div>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-4">
         <Field label="Topic">
           <input
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            className="w-full rounded-lg border px-4 py-3 text-base outline-none focus:ring-2 focus:ring-zinc-200"
             placeholder="Es. skincare sostenibile"
           />
         </Field>
@@ -144,7 +144,7 @@ export default function BriefForm({
           <input
             value={industry}
             onChange={(e) => setIndustry(e.target.value)}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            className="w-full rounded-lg border px-4 py-3 text-base outline-none focus:ring-2 focus:ring-zinc-200"
             placeholder="Es. Beauty"
           />
         </Field>
@@ -154,7 +154,7 @@ export default function BriefForm({
             <select
               value={platform}
               onChange={(e) => setPlatform(e.target.value as Brief["platform"])}
-              className="w-full h-8 rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+              className="w-full h-11 rounded-lg border px-3 py-2 text-base outline-none focus:ring-2 focus:ring-zinc-200"
             >
               {PLATFORM_OPTIONS.map((p) => (
                 <option key={p} value={p}>
@@ -168,7 +168,7 @@ export default function BriefForm({
             <select
               value={contentGoal}
               onChange={(e) => setContentGoal(e.target.value as Brief["content_goal"])}
-              className="w-full h-8 rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+              className="w-full h-11 rounded-lg border px-3 py-2 text-base outline-none focus:ring-2 focus:ring-zinc-200"
             >
               {CONTENT_GOAL_OPTIONS.map((p) => (
                 <option key={p} value={p}>
@@ -183,7 +183,7 @@ export default function BriefForm({
           <select
             value={objective}
             onChange={(e) => setObjective(e.target.value as Brief["campaign_objective"])}
-            className="w-full h-8 rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            className="w-full h-11 rounded-lg border px-3 py-2 text-base outline-none focus:ring-2 focus:ring-zinc-200"
           >
             {OBJECTIVE_OPTIONS.map((o) => (
               <option key={o} value={o}>
@@ -198,7 +198,7 @@ export default function BriefForm({
             value={targetAudience}
             onChange={(e) => setTargetAudience(e.target.value)}
             rows={3}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            className="w-full rounded-lg border px-4 py-3 text-base outline-none focus:ring-2 focus:ring-zinc-200"
             placeholder="Es. Donne 25-34, interessate a routine semplici e sostenibili…"
           />
         </Field>
@@ -208,7 +208,7 @@ export default function BriefForm({
             value={tovText}
             onChange={(e) => setTovText(e.target.value)}
             rows={2}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            className="w-full rounded-lg border px-4 py-3 text-base outline-none focus:ring-2 focus:ring-zinc-200"
             placeholder='Es. autentico, educational, ironico'
           />
         </Field>
@@ -217,7 +217,7 @@ export default function BriefForm({
           <select
             value={creatorType}
             onChange={(e) => setCreatorType(e.target.value as Brief["creator_type"])}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            className="w-full h-11 rounded-lg border px-3 py-2 text-base outline-none focus:ring-2 focus:ring-zinc-200"
           >
             {CREATOR_OPTIONS.map((c) => (
               <option key={c} value={c}>
@@ -234,7 +234,7 @@ export default function BriefForm({
               return (
                 <label
                   key={v}
-                  className="flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 text-sm hover:bg-zinc-50"
+                  className="flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 text-base hover:bg-zinc-50"
                 >
                   <input
                     type="checkbox"
@@ -253,7 +253,7 @@ export default function BriefForm({
             value={constraintsText}
             onChange={(e) => setConstraintsText(e.target.value)}
             rows={4}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            className="w-full rounded-lg border px-4 py-3 text-base outline-none focus:ring-2 focus:ring-zinc-200"
             placeholder={`claim vietati: …\nparole da evitare: …\ndurata max: …`}
           />
         </Field>
@@ -262,7 +262,7 @@ export default function BriefForm({
           <select
             value={cta}
             onChange={(e) => setCta(e.target.value)}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            className="w-full h-11 rounded-lg border px-3 py-2 text-base outline-none focus:ring-2 focus:ring-zinc-200"
           >
             {CTA_PRESETS.map((x) => (
               <option key={x} value={x}>
@@ -274,7 +274,7 @@ export default function BriefForm({
 
           {cta === "custom" && (
             <input
-              className="mt-2 w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+              className="mt-2 w-full rounded-lg border px-4 py-3 text-base outline-none focus:ring-2 focus:ring-zinc-200"
               placeholder="Scrivi una CTA precisa…"
               onChange={(e) => setCta(e.target.value)}
             />
@@ -285,7 +285,7 @@ export default function BriefForm({
           <input
             value={videoPurpose}
             onChange={(e) => setVideoPurpose(e.target.value)}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            className="w-full rounded-lg border px-4 py-3 text-base outline-none focus:ring-2 focus:ring-zinc-200"
             placeholder="Es. educare, ispirare, convertire"
           />
         </Field>
@@ -294,7 +294,7 @@ export default function BriefForm({
           <input
             value={contentArchetype}
             onChange={(e) => setContentArchetype(e.target.value)}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            className="w-full rounded-lg border px-4 py-3 text-base outline-none focus:ring-2 focus:ring-zinc-200"
             placeholder="Es. tutorial, recensione, storytelling"
           />
         </Field>
@@ -303,7 +303,7 @@ export default function BriefForm({
           <input
             value={hookType}
             onChange={(e) => setHookType(e.target.value)}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            className="w-full rounded-lg border px-4 py-3 text-base outline-none focus:ring-2 focus:ring-zinc-200"
             placeholder="Es. shock, domanda, problema/soluzione"
           />
         </Field>
@@ -312,7 +312,7 @@ export default function BriefForm({
           <input
             value={emotionalTone}
             onChange={(e) => setEmotionalTone(e.target.value)}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            className="w-full rounded-lg border px-4 py-3 text-base outline-none focus:ring-2 focus:ring-zinc-200"
             placeholder="Es. empatico, energico, autorevole"
           />
         </Field>
@@ -323,7 +323,7 @@ export default function BriefForm({
             onChange={(e) => setMaxDurationSeconds(e.target.value)}
             type="number"
             min={1}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            className="w-full rounded-lg border px-4 py-3 text-base outline-none focus:ring-2 focus:ring-zinc-200"
             placeholder="Es. 30"
           />
         </Field>
@@ -333,7 +333,7 @@ export default function BriefForm({
             value={wordsToAvoidText}
             onChange={(e) => setWordsToAvoidText(e.target.value)}
             rows={2}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            className="w-full rounded-lg border px-4 py-3 text-base outline-none focus:ring-2 focus:ring-zinc-200"
             placeholder="Es. miracoloso, garantito..."
           />
         </Field>
@@ -343,7 +343,7 @@ export default function BriefForm({
             value={mandatoryElementsText}
             onChange={(e) => setMandatoryElementsText(e.target.value)}
             rows={2}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            className="w-full rounded-lg border px-4 py-3 text-base outline-none focus:ring-2 focus:ring-zinc-200"
             placeholder="Es. brand name, pricing, disclaimer..."
           />
         </Field>
@@ -352,7 +352,7 @@ export default function BriefForm({
           <input
             value={awarenessLevel}
             onChange={(e) => setAwarenessLevel(e.target.value)}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            className="w-full rounded-lg border px-4 py-3 text-base outline-none focus:ring-2 focus:ring-zinc-200"
             placeholder="Es. unaware, problem-aware, solution-aware"
           />
         </Field>
@@ -361,7 +361,7 @@ export default function BriefForm({
           <input
             value={desiredReaction}
             onChange={(e) => setDesiredReaction(e.target.value)}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            className="w-full rounded-lg border px-4 py-3 text-base outline-none focus:ring-2 focus:ring-zinc-200"
             placeholder="Es. commenta, salva, visita il sito"
           />
         </Field>
@@ -370,7 +370,7 @@ export default function BriefForm({
       <button
         type="submit"
         disabled={!isValid || Boolean(disabled)}
-        className="w-full rounded-xl bg-zinc-900 px-4 py-3 text-sm font-semibold text-white hover:bg-zinc-800 disabled:opacity-50"
+        className="w-full rounded-xl bg-zinc-900 px-4 py-4 text-base font-semibold text-white hover:bg-zinc-800 disabled:opacity-50"
       >
         {disabled ? "Attendi…" : "Genera"}
       </button>
@@ -381,7 +381,7 @@ export default function BriefForm({
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <div className="mb-1 text-xs font-semibold text-zinc-800">{label}</div>
+      <div className="mb-1 text-sm font-semibold text-zinc-800">{label}</div>
       {children}
     </div>
   );

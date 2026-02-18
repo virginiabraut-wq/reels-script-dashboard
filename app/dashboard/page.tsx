@@ -263,29 +263,29 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-zinc-50">
-      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-      <header className="mb-6 flex items-center gap-3">
-  <Image
-    src="/logo-franci.jpg"
-    alt="Franci GPT logo"
-    width={36}
-    height={36}
-    className="rounded-full"
-  />
+      <div className="mx-auto w-full max-w-none px-4 py-5 sm:px-6 sm:py-6 lg:px-8">
+        <header className="mb-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+          <Image
+            src="/logo-franci.jpg"
+            alt="Franci GPT logo"
+            width={36}
+            height={36}
+            className="rounded-full"
+          />
 
-  <div>
-    <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
-      Franci.GPT💜
-    </h1>
-    <p className="text-sm text-zinc-600">
-      Brief → Trend → Format → Script
-    </p>
-  </div>
-</header>
+          <div>
+            <h1 className="text-xl font-semibold tracking-tight text-zinc-900 sm:text-2xl">
+              Franci.GPT💜
+            </h1>
+            <p className="text-sm text-zinc-600">
+              Brief → Trend → Format → Script
+            </p>
+          </div>
+        </header>
 
-        <div className="grid gap-6 lg:grid-cols-[360px_1fr]">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)]">
           {/* SIDEBAR: SOLO BRIEF */}
-          <aside className="rounded-2xl border bg-purple-100 p-4 shadow-sm">
+          <aside className="rounded-2xl border bg-purple-100 p-4 shadow-sm sm:p-5 lg:sticky lg:top-6 lg:h-fit lg:self-start">
             <BriefForm
               onSubmit={onSubmitBrief}
               disabled={formatsLoading || scriptsLoadingId !== null}
@@ -293,10 +293,10 @@ export default function DashboardPage() {
           </aside>
 
           {/* MAIN: CHAT + FORMAT + SCRIPT */}
-          <main className="min-h-0 rounded-2xl border bg-white p-4 shadow-sm flex flex-col gap-6">
+          <main className="min-h-0 min-w-0 rounded-2xl border bg-white p-4 shadow-sm flex flex-col gap-6 sm:p-5">
             {/* SCRIPT DI RIFERIMENTO */}
-            <section className="rounded-2xl border bg-zinc-50 p-4">
-              <div className="mb-2 flex items-center justify-between">
+            <section className="rounded-2xl border bg-zinc-50 p-4 sm:p-5">
+              <div className="mb-2 flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-center">
                 <div>
                   <h2 className="text-sm font-semibold text-zinc-900">Script di riferimento (opzionale)</h2>
                   <p className="text-xs text-zinc-600">
@@ -325,8 +325,9 @@ export default function DashboardPage() {
               </div>
             </section>
 
+            <div className="grid gap-6 xl:grid-cols-2">
             {/* FORMAT (spostati qui) */}
-            <section className="rounded-2xl border bg-zinc-50 p-4">
+            <section className="rounded-2xl border bg-zinc-50 p-4 sm:p-5">
               <div className="mb-2 flex items-center justify-between">
                 <h2 className="text-sm font-semibold text-zinc-900">Format</h2>
                 {formatsLoading && <span className="text-xs text-zinc-500">genero…</span>}
@@ -354,10 +355,10 @@ export default function DashboardPage() {
 
                   return (
                     <div key={f.id} className="rounded-xl border p-3 bg-white">
-                      <div className="flex items-start justify-between gap-3">
+                      <div className="flex flex-col items-start justify-between gap-3 sm:flex-row">
                         <div className="min-w-0">
                           <div className="text-sm font-semibold text-zinc-900">{f.title}</div>
-                          <div className="mt-1 text-xs text-zinc-600">{f.description}</div>
+                          <div className="mt-1 text-xs text-zinc-600 wrap-break-word">{f.description}</div>
 
                           {f.goal && (
                             <div className="mt-2 text-xs text-zinc-700">
@@ -376,7 +377,7 @@ export default function DashboardPage() {
                       {/* Se NON approvato: approva/rifiuta + note */}
                       {!isApproved && (
                         <>
-                          <div className="mt-3 flex gap-2">
+                          <div className="mt-3 flex flex-col gap-2 sm:flex-row">
                             <button
                               type="button"
                               onClick={() => approveFormat(f.id)}
@@ -424,7 +425,7 @@ export default function DashboardPage() {
                             </div>
                           )}
 
-                          <div className="flex gap-2">
+                          <div className="flex flex-col gap-2 sm:flex-row">
                             <button
                               type="button"
                               onClick={() => generateScriptsForFormat(f.id)}
@@ -457,7 +458,7 @@ export default function DashboardPage() {
             </section>
 
             {/* SCRIPT (sempre visibili qui) */}
-            <section className="rounded-2xl border p-4">
+            <section className="rounded-2xl border p-4 sm:p-5">
               <div className="mb-2 flex items-center justify-between">
                 <h3 className="text-sm font-semibold text-zinc-900">Script generati</h3>
                 {totalScripts > 0 && (
@@ -490,7 +491,7 @@ export default function DashboardPage() {
                           {scripts.map((s) => (
                             <details key={`${s.format_id}-${s.script_title}`} className="rounded-xl border p-3">
                               <summary className="cursor-pointer list-none">
-                                <div className="flex items-center justify-between gap-3">
+                                <div className="flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-center">
                                   <div className="min-w-0">
                                     <div className="text-sm font-semibold text-zinc-900">{s.script_title}</div>
                                     <div className="text-xs text-zinc-600">{s.duration_seconds}s</div>
@@ -504,7 +505,7 @@ export default function DashboardPage() {
                                   <div className="text-xs font-semibold text-zinc-800">Scene-by-scene</div>
                                   <div className="mt-2 space-y-2">
                                     {s.scene_by_scene.map((sc, idx) => (
-                                      <div key={idx} className="text-xs text-zinc-700">
+                                      <div key={idx} className="text-xs text-zinc-700 wrap-break-word">
                                         <div className="font-medium">
                                           {sc.t} — {sc.on_screen_text}
                                         </div>
@@ -525,7 +526,9 @@ export default function DashboardPage() {
                                 <div className="grid gap-3 md:grid-cols-2">
                                   <div className="rounded-lg border p-3">
                                     <div className="text-xs font-semibold text-zinc-800">Caption</div>
-                                    <p className="mt-2 text-xs text-zinc-700 whitespace-pre-wrap">{s.caption.text}</p>
+                                    <p className="mt-2 text-xs text-zinc-700 whitespace-pre-wrap wrap-break-word">
+                                      {s.caption.text}
+                                    </p>
                                   </div>
 
                                   <div className="rounded-lg border p-3">
@@ -549,7 +552,7 @@ export default function DashboardPage() {
                                           <li key={i}>{d}</li>
                                         ))}
                                       </ul>
-                                      <div className="mt-2">
+                                      <div className="mt-2 wrap-break-word">
                                         <span className="font-medium">Editing:</span> {s.creator_playbook.editing_notes}
                                       </div>
                                     </div>
@@ -565,6 +568,7 @@ export default function DashboardPage() {
                 </div>
               )}
             </section>
+            </div>
           </main>
         </div>
       </div>
